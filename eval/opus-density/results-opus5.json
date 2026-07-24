@@ -1,0 +1,43 @@
+{
+  "generatedAt": "2026-07-24T17:36:29.318Z",
+  "textTokens": 1335,
+  "variants": [
+    {
+      "variant": "5x8",
+      "pages": 1,
+      "dims": [
+        "1568x128"
+      ],
+      "imageTokens": 280,
+      "savingsPct": 79,
+      "models": {}
+    },
+    {
+      "variant": "7x10",
+      "pages": 1,
+      "dims": [
+        "1562x228"
+      ],
+      "imageTokens": 504,
+      "savingsPct": 62,
+      "models": {}
+    },
+    {
+      "variant": "9x12",
+      "pages": 1,
+      "dims": [
+        "1565x344"
+      ],
+      "imageTokens": 728,
+      "savingsPct": 45,
+      "models": {}
+    }
+  ],
+  "models": [
+    "claude-opus-5",
+    "claude-opus-4-8",
+    "claude-fable-5"
+  ],
+  "repeats": 3,
+  "maxTokens": 2048
+}
