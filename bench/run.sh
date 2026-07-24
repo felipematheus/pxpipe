@@ -15,6 +15,7 @@ MODEL="claude-fable-5"
 LABEL="bench"
 PORT="${PORT:-}"
 BUILD=1
+CHURN=1
 PROMPTS_FILE=""
 CLAUDE_BIN="${CLAUDE_BIN:-claude}"
 
@@ -26,6 +27,13 @@ while [ $# -gt 0 ]; do
     --port)    PORT="$2"; shift 2 ;;
     --prompts) PROMPTS_FILE="$2"; shift 2 ;;
     --no-build) BUILD=0; shift ;;
+    # Steady-state mode: skip the synthetic <env> churn so successive turns are
+    # measured with the prefix held still. Needed to isolate "how much cheaper is
+    # an imaged prefix" from "how often does the prefix get invalidated" — with
+    # churn on, imaging changes the invalidation RATE, so on/off totals conflate
+    # the two effects. Pair with read-only --prompts (a turn that writes files
+    # moves git status and churns <env> by itself).
+    --no-churn) CHURN=0; shift ;;
     *) echo "unknown arg: $1" >&2; exit 1 ;;
   esac
 done
@@ -91,8 +99,10 @@ for i in $(seq 1 "$TURNS"); do
   PROMPT="${PROMPTS[$((i - 1))]}"
   # Churn the volatile <env> surface between turns (untracked files + mtimes),
   # exactly the git-status noise that used to flip the cache prefix.
-  echo "turn $i $(date +%s)" >> "$WS/scratch.log"
-  touch "$WS/tmp-$i.tmp"
+  if [ "$CHURN" = 1 ]; then
+    echo "turn $i $(date +%s)" >> "$WS/scratch.log"
+    touch "$WS/tmp-$i.tmp"
+  fi
 
   echo "[bench] turn $i/$TURNS: $PROMPT"
   ( cd "$WS" && env ANTHROPIC_BASE_URL="http://127.0.0.1:$PORT" \

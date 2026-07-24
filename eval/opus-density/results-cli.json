@@ -1,0 +1,503 @@
+{
+  "generatedAt": "2026-07-24T18:04:57.158Z",
+  "transport": "claude-code-cli",
+  "models": [
+    "claude-opus-5",
+    "claude-fable-5"
+  ],
+  "textTokens": 1335,
+  "variants": [
+    {
+      "variant": "5x8",
+      "dims": "1568x128",
+      "imageTokens": 280,
+      "savingsPct": 79,
+      "models": {
+        "claude-opus-5": {
+          "exactCorrect": 4,
+          "exactTotal": 4,
+          "confab": 0,
+          "abstain": 1,
+          "errors": 0,
+          "gistOk": true,
+          "guardOk": true,
+          "usd": 2.0467835,
+          "answers": [
+            {
+              "id": "hex",
+              "kind": "exact",
+              "expected": "a3f9c1e0b7d2",
+              "got": "a3f9c1e0b7d2",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 64689,
+              "usd": 0.30280949999999995
+            },
+            {
+              "id": "camel",
+              "kind": "exact",
+              "expected": "tokenLedgerShard",
+              "got": "tokenLedgerShard",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 10451,
+              "usd": 0.094095
+            },
+            {
+              "id": "path",
+              "kind": "exact",
+              "expected": "src/core/anthropic-vision.ts",
+              "got": "src/core/anthropic-vision.ts",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 37007,
+              "usd": 0.186383
+            },
+            {
+              "id": "port",
+              "kind": "exact",
+              "expected": "47821",
+              "got": "47821",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 60305,
+              "usd": 0.2654065
+            },
+            {
+              "id": "gist",
+              "kind": "gist",
+              "expected": "3",
+              "got": "3",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 258218,
+              "usd": 1.1015570000000001
+            },
+            {
+              "id": "guard",
+              "kind": "guard",
+              "expected": "NOT STATED",
+              "got": "NOT STATED",
+              "ok": true,
+              "abstained": true,
+              "confab": false,
+              "ms": 13308,
+              "usd": 0.0965325
+            }
+          ]
+        },
+        "claude-fable-5": {
+          "exactCorrect": 4,
+          "exactTotal": 4,
+          "confab": 0,
+          "abstain": 1,
+          "errors": 0,
+          "gistOk": true,
+          "guardOk": true,
+          "usd": 1.3009160000000002,
+          "answers": [
+            {
+              "id": "hex",
+              "kind": "exact",
+              "expected": "a3f9c1e0b7d2",
+              "got": "a3f9c1e0b7d2",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 14343,
+              "usd": 0.272305
+            },
+            {
+              "id": "camel",
+              "kind": "exact",
+              "expected": "tokenLedgerShard",
+              "got": "tokenLedgerShard",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 18993,
+              "usd": 0.18472700000000003
+            },
+            {
+              "id": "path",
+              "kind": "exact",
+              "expected": "src/core/anthropic-vision.ts",
+              "got": "`src/core/anthropic-vision.ts`",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 14747,
+              "usd": 0.188425
+            },
+            {
+              "id": "port",
+              "kind": "exact",
+              "expected": "47821",
+              "got": "47821",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 34262,
+              "usd": 0.30647
+            },
+            {
+              "id": "gist",
+              "kind": "gist",
+              "expected": "3",
+              "got": "3",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 10676,
+              "usd": 0.184356
+            },
+            {
+              "id": "guard",
+              "kind": "guard",
+              "expected": "NOT STATED",
+              "got": "NOT STATED",
+              "ok": true,
+              "abstained": true,
+              "confab": false,
+              "ms": 9136,
+              "usd": 0.164633
+            }
+          ]
+        }
+      }
+    },
+    {
+      "variant": "7x10",
+      "dims": "1562x228",
+      "imageTokens": 504,
+      "savingsPct": 62,
+      "models": {
+        "claude-opus-5": {
+          "exactCorrect": 4,
+          "exactTotal": 4,
+          "confab": 0,
+          "abstain": 1,
+          "errors": 0,
+          "gistOk": true,
+          "guardOk": true,
+          "usd": 0.876568,
+          "answers": [
+            {
+              "id": "hex",
+              "kind": "exact",
+              "expected": "a3f9c1e0b7d2",
+              "got": "a3f9c1e0b7d2",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 39475,
+              "usd": 0.22660000000000002
+            },
+            {
+              "id": "camel",
+              "kind": "exact",
+              "expected": "tokenLedgerShard",
+              "got": "tokenLedgerShard",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 10838,
+              "usd": 0.096652
+            },
+            {
+              "id": "path",
+              "kind": "exact",
+              "expected": "src/core/anthropic-vision.ts",
+              "got": "`src/core/anthropic-vision.ts`",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 30900,
+              "usd": 0.16793999999999998
+            },
+            {
+              "id": "port",
+              "kind": "exact",
+              "expected": "47821",
+              "got": "47821",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 37159,
+              "usd": 0.19537000000000002
+            },
+            {
+              "id": "gist",
+              "kind": "gist",
+              "expected": "3",
+              "got": "3",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 9147,
+              "usd": 0.0944965
+            },
+            {
+              "id": "guard",
+              "kind": "guard",
+              "expected": "NOT STATED",
+              "got": "NOT STATED",
+              "ok": true,
+              "abstained": true,
+              "confab": false,
+              "ms": 10011,
+              "usd": 0.0955095
+            }
+          ]
+        },
+        "claude-fable-5": {
+          "exactCorrect": 4,
+          "exactTotal": 4,
+          "confab": 0,
+          "abstain": 1,
+          "errors": 0,
+          "gistOk": true,
+          "guardOk": true,
+          "usd": 1.210978,
+          "answers": [
+            {
+              "id": "hex",
+              "kind": "exact",
+              "expected": "a3f9c1e0b7d2",
+              "got": "a3f9c1e0b7d2",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 10317,
+              "usd": 0.263617
+            },
+            {
+              "id": "camel",
+              "kind": "exact",
+              "expected": "tokenLedgerShard",
+              "got": "tokenLedgerShard",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 12538,
+              "usd": 0.190122
+            },
+            {
+              "id": "path",
+              "kind": "exact",
+              "expected": "src/core/anthropic-vision.ts",
+              "got": "src/core/anthropic-vision.ts",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 10526,
+              "usd": 0.19057000000000002
+            },
+            {
+              "id": "port",
+              "kind": "exact",
+              "expected": "47821",
+              "got": "47821",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 11105,
+              "usd": 0.188525
+            },
+            {
+              "id": "gist",
+              "kind": "gist",
+              "expected": "3",
+              "got": "3",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 9904,
+              "usd": 0.18785100000000002
+            },
+            {
+              "id": "guard",
+              "kind": "guard",
+              "expected": "NOT STATED",
+              "got": "NOT STATED",
+              "ok": true,
+              "abstained": true,
+              "confab": false,
+              "ms": 13753,
+              "usd": 0.190293
+            }
+          ]
+        }
+      }
+    },
+    {
+      "variant": "9x12",
+      "dims": "1565x344",
+      "imageTokens": 728,
+      "savingsPct": 45,
+      "models": {
+        "claude-opus-5": {
+          "exactCorrect": 4,
+          "exactTotal": 4,
+          "confab": 0,
+          "abstain": 1,
+          "errors": 0,
+          "gistOk": true,
+          "guardOk": true,
+          "usd": 0.9108009999999999,
+          "answers": [
+            {
+              "id": "hex",
+              "kind": "exact",
+              "expected": "a3f9c1e0b7d2",
+              "got": "a3f9c1e0b7d2",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 38902,
+              "usd": 0.196098
+            },
+            {
+              "id": "camel",
+              "kind": "exact",
+              "expected": "tokenLedgerShard",
+              "got": "tokenLedgerShard",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 37179,
+              "usd": 0.189657
+            },
+            {
+              "id": "path",
+              "kind": "exact",
+              "expected": "src/core/anthropic-vision.ts",
+              "got": "src/core/anthropic-vision.ts",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 32606,
+              "usd": 0.174363
+            },
+            {
+              "id": "port",
+              "kind": "exact",
+              "expected": "47821",
+              "got": "47821",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 27294,
+              "usd": 0.15602349999999998
+            },
+            {
+              "id": "gist",
+              "kind": "gist",
+              "expected": "3",
+              "got": "3",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 9605,
+              "usd": 0.09600500000000001
+            },
+            {
+              "id": "guard",
+              "kind": "guard",
+              "expected": "NOT STATED",
+              "got": "NOT STATED",
+              "ok": true,
+              "abstained": true,
+              "confab": false,
+              "ms": 11084,
+              "usd": 0.09865449999999999
+            }
+          ]
+        },
+        "claude-fable-5": {
+          "exactCorrect": 4,
+          "exactTotal": 4,
+          "confab": 0,
+          "abstain": 1,
+          "errors": 0,
+          "gistOk": true,
+          "guardOk": true,
+          "usd": 1.3335620000000001,
+          "answers": [
+            {
+              "id": "hex",
+              "kind": "exact",
+              "expected": "a3f9c1e0b7d2",
+              "got": "a3f9c1e0b7d2",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 16419,
+              "usd": 0.195073
+            },
+            {
+              "id": "camel",
+              "kind": "exact",
+              "expected": "tokenLedgerShard",
+              "got": "tokenLedgerShard",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 11173,
+              "usd": 0.19515200000000002
+            },
+            {
+              "id": "path",
+              "kind": "exact",
+              "expected": "src/core/anthropic-vision.ts",
+              "got": "src/core/anthropic-vision.ts",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 11438,
+              "usd": 0.194147
+            },
+            {
+              "id": "port",
+              "kind": "exact",
+              "expected": "47821",
+              "got": "47821",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 41747,
+              "usd": 0.362136
+            },
+            {
+              "id": "gist",
+              "kind": "gist",
+              "expected": "3",
+              "got": "3",
+              "ok": true,
+              "abstained": false,
+              "confab": false,
+              "ms": 10025,
+              "usd": 0.19323400000000002
+            },
+            {
+              "id": "guard",
+              "kind": "guard",
+              "expected": "NOT STATED",
+              "got": "NOT STATED",
+              "ok": true,
+              "abstained": true,
+              "confab": false,
+              "ms": 10433,
+              "usd": 0.19382
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
