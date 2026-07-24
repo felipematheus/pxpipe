@@ -52,7 +52,21 @@ const VARIANTS = [
   { name: '7x10', style: { cellWBonus: 2, cellHBonus: 2, aa: true }, cols: colsFor(2) },
   { name: '9x12', style: { cellWBonus: 4, cellHBonus: 4, aa: true }, cols: colsFor(4) },
 ];
-const MODELS = ['claude-opus-4-8', 'claude-fable-5'];
+// CLI overrides. Defaults reproduce the committed 2026-07-05 run exactly; pass
+// --models/--repeats/--out to sweep a new reader without clobbering that receipt.
+const argOf = (name, fallback) => {
+  const i = process.argv.indexOf(`--${name}`);
+  return i === -1 ? fallback : process.argv[i + 1];
+};
+const MODELS = argOf('models', 'claude-opus-4-8,claude-fable-5').split(',');
+// n=1 cannot support a comparative claim: with 4 exact tasks per cell, one
+// question is 1/4 of the score. Repeat and report the spread.
+const REPEATS = Number(argOf('repeats', '1'));
+const OUT_FILE = argOf('out', 'results.json');
+// 128 was too small; 512 fits a Fable answer after its thinking. Claude Opus 5
+// thinks by default too, so a wider sweep wants headroom — same value for every
+// model in a run, or the comparison is not apples-to-apples.
+const MAX_TOKENS = Number(argOf('max-tokens', '512'));
 
 const TEXT_TOKENS = Math.ceil(SESSION.length / 3.5); // rough Claude-Code-dense baseline
 
@@ -71,7 +85,7 @@ async function callModel(model, dataUrls, question) {
     headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
     // 128 was too small: always-on-thinking models (Fable 5) spend the whole
     // budget on thinking and return no answer text. Give the answer room.
-    body: JSON.stringify({ model, max_tokens: 512, messages: [{ role: 'user', content }] }),
+    body: JSON.stringify({ model, max_tokens: MAX_TOKENS, messages: [{ role: 'user', content }] }),
   });
   const j = await res.json();
   const stop = j?.stop_reason ?? null;
@@ -108,23 +122,46 @@ for (const v of VARIANTS) {
 
   if (process.env.ANTHROPIC_API_KEY) {
     for (const model of MODELS) {
-      const m = { exactCorrect: 0, exactTotal: 0, confab: 0, abstain: 0, refused: 0, refusalCat: null, gistOk: false, guardOk: false, answers: [] };
-      for (const q of QUESTIONS) {
-        const { text, ms, stop, cat } = await callModel(model, dataUrls, q.q);
-        const s = score(q.kind, q.answer, text, stop);
-        m.answers.push({ id: q.id, kind: q.kind, expected: q.answer, got: text, stop, cat, ...s, ms });
-        if (q.kind === 'exact') { m.exactTotal++; if (s.ok) m.exactCorrect++; }
-        if (s.confab) m.confab++;
-        if (s.abstained) m.abstain++;
-        if (s.refused) { m.refused++; m.refusalCat = m.refusalCat || cat; }
-        if (q.kind === 'gist' && !s.refused) m.gistOk = s.ok;
-        // A refused guard is SAFE (the model didn't state the never-stated fact),
-        // so it passes the guard just like an abstention does.
-        if (q.kind === 'guard') m.guardOk = s.ok || s.refused;
+      const runs = [];
+      for (let r = 0; r < REPEATS; r++) {
+        const m = { exactCorrect: 0, exactTotal: 0, confab: 0, abstain: 0, refused: 0, refusalCat: null, gistOk: false, guardOk: false, answers: [] };
+        for (const q of QUESTIONS) {
+          const { text, ms, stop, cat } = await callModel(model, dataUrls, q.q);
+          const s = score(q.kind, q.answer, text, stop);
+          m.answers.push({ id: q.id, kind: q.kind, expected: q.answer, got: text, stop, cat, ...s, ms });
+          if (q.kind === 'exact') { m.exactTotal++; if (s.ok) m.exactCorrect++; }
+          if (s.confab) m.confab++;
+          if (s.abstained) m.abstain++;
+          if (s.refused) { m.refused++; m.refusalCat = m.refusalCat || cat; }
+          if (q.kind === 'gist' && !s.refused) m.gistOk = s.ok;
+          // A refused guard is SAFE (the model didn't state the never-stated fact),
+          // so it passes the guard just like an abstention does.
+          if (q.kind === 'guard') m.guardOk = s.ok || s.refused;
+        }
+        runs.push(m);
       }
-      row.models[model] = m;
-      const refNote = m.refused ? `, REFUSED ${m.refused}/${QUESTIONS.length}${m.refusalCat ? ` (${m.refusalCat})` : ''}` : '';
-      console.log(`  ${model}: exact ${m.exactCorrect}/${m.exactTotal}, confab ${m.confab}, abstain ${m.abstain}${refNote}, gist ${m.gistOk ? 'ok' : 'MISS'}, guard ${m.guardOk ? 'ok' : 'FAIL'}`);
+      // One repeat keeps the original single-object shape so the committed
+      // results.json stays byte-comparable; more than one adds the spread.
+      const agg = runs.length === 1 ? runs[0] : {
+        repeats: runs.length,
+        exactCorrect: runs.reduce((n, m) => n + m.exactCorrect, 0),
+        exactTotal: runs.reduce((n, m) => n + m.exactTotal, 0),
+        exactPerRun: runs.map((m) => m.exactCorrect),
+        confab: runs.reduce((n, m) => n + m.confab, 0),
+        confabPerRun: runs.map((m) => m.confab),
+        abstain: runs.reduce((n, m) => n + m.abstain, 0),
+        refused: runs.reduce((n, m) => n + m.refused, 0),
+        refusalCat: runs.find((m) => m.refusalCat)?.refusalCat ?? null,
+        gistOk: runs.filter((m) => m.gistOk).length,
+        guardOk: runs.filter((m) => m.guardOk).length,
+        runs,
+      };
+      row.models[model] = agg;
+      const refNote = agg.refused ? `, REFUSED ${agg.refused}/${QUESTIONS.length * runs.length}${agg.refusalCat ? ` (${agg.refusalCat})` : ''}` : '';
+      const spread = runs.length === 1 ? '' : ` [per run ${agg.exactPerRun.join('/')}]`;
+      const gist = runs.length === 1 ? (agg.gistOk ? 'ok' : 'MISS') : `${agg.gistOk}/${runs.length}`;
+      const guard = runs.length === 1 ? (agg.guardOk ? 'ok' : 'FAIL') : `${agg.guardOk}/${runs.length}`;
+      console.log(`  ${model}: exact ${agg.exactCorrect}/${agg.exactTotal}${spread}, confab ${agg.confab}, abstain ${agg.abstain}${refNote}, gist ${gist}, guard ${guard}`);
     }
   } else {
     console.log('  (dry run — set ANTHROPIC_API_KEY to call the models and score)');
@@ -132,5 +169,8 @@ for (const v of VARIANTS) {
   results.variants.push(row);
 }
 
-writeFileSync(join(here, 'results.json'), JSON.stringify(results, null, 2));
-console.log(`\nWrote ${join(here, 'results.json')}`);
+results.models = MODELS;
+results.repeats = REPEATS;
+results.maxTokens = MAX_TOKENS;
+writeFileSync(join(here, OUT_FILE), JSON.stringify(results, null, 2));
+console.log(`\nWrote ${join(here, OUT_FILE)}`);
